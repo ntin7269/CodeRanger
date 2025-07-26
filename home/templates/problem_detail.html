@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ problem.title }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: #f9fef9;
+        }
+        .navbar {
+            background-color: #28a745;
+        }
+        .navbar-brand, .nav-link {
+            color: white !important;
+            font-weight: 500;
+        }
+        .nav-link:hover {
+            text-decoration: underline;
+        }
+        .problem-container {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+        }
+        h1 {
+            color: #28a745;
+            font-weight: bold;
+        }
+        h4 {
+            color: #343a40;
+            margin-top: 20px;
+        }
+        pre {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            font-size: 1rem;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        p {
+            white-space: pre-wrap;
+        }
+
+        .code-button {
+            display: block;
+            width: 100%;
+            background-color: #28a745;
+            border: none;
+            color: white;
+            font-size: 1.25rem;
+            font-weight: bold;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 30px;
+            transition: background-color 0.3s ease;
+            text-decoration: none;
+        }
+        .code-button:hover {
+            background-color: #218838;
+            color: white;
+            text-decoration: none;
+        }
+    </style>
+
+    <!-- ✅ MathJax CDN -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg">
+  <a class="navbar-brand" href="/">CodeRangers</a>
+  <div class="collapse navbar-collapse">
+    <ul class="navbar-nav ml-auto">
+      {% if request.user.is_authenticated %}
+        <li class="nav-item"><a class="nav-link" href="/problems/">Problems</a></li>
+        <li class="nav-item"><a class="nav-link" href="/auth/logout/">Logout</a></li>
+      {% else %}
+        <li class="nav-item"><a class="nav-link" href="/auth/login/">Login</a></li>
+        <li class="nav-item"><a class="nav-link" href="/auth/register/">Register</a></li>
+        <li class="nav-item"><a class="nav-link" href="/problems/">Problems</a></li>
+      {% endif %}
+    </ul>
+  </div>
+</nav>
+
+<div class="container mt-4">
+    <div class="problem-container">
+        <a href="{% url 'all_problems' %}" class="btn btn-secondary mb-3">← Back to All Problems</a>
+
+        <h1 class="mb-3">{{ problem.title }}</h1>
+
+        <p>
+            <strong>Difficulty:</strong> {{ problem.difficulty }} 
+            <strong>Time Limit:</strong> {{ problem.time_limit }}s 
+            <strong>Memory Limit:</strong> {{ problem.memory_limit }}MB
+        </p>
+
+        {% if problem.tags %}
+        <p><strong>Tags:</strong> {{ problem.tags }}</p>
+        {% endif %}
+
+        <h4>Description:</h4>
+        <div>{{ problem.description|safe }}</div>
+
+        <h4>Input Constraints:</h4>
+        <div>{{ problem.input_constraints|safe }}</div>
+
+        <h4>Output Format:</h4>
+        <div>{{ problem.output_format|safe }}</div>
+
+        <h4>Sample Input 1:</h4>
+        <pre>{{ problem.sample_input_1 }}</pre>
+
+        <h4>Sample Output 1:</h4>
+        <pre>{{ problem.sample_output_1 }}</pre>
+
+        {% if problem.sample_input_2 %}
+            <h4>Sample Input 2:</h4>
+            <pre>{{ problem.sample_input_2 }}</pre>
+
+            <h4>Sample Output 2:</h4>
+            <pre>{{ problem.sample_output_2 }}</pre>
+        {% endif %}
+
+        <!-- ✅ New Code Button -->
+        <a href="{% url 'submit' %}?problem_id={{ problem.id }}" class="code-button">
+            🚀 Code Now
+        </a>
+
+    </div>
+</div>
+
+</body>
+</html>

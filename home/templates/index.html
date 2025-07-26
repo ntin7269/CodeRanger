@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="text-center my-5">
+    <h1 class="display-4 text-success font-weight-bold">Welcome to CodeRangers</h1>
+    <p class="lead">Sharpen your coding skills with real-time challenges</p>
+    <a href="/auth/register/" class="btn btn-success btn-lg mx-2">Get Started</a>
+    <a href="/auth/login/" class="btn btn-outline-success btn-lg mx-2">Login</a>
+</div>
+
+<div class="row text-center">
+    <div class="col-md-4">
+        <div class="card shadow p-4 mb-4">
+            <h4 class="text-success">🧠 Practice Problems</h4>
+            <p>Solve algorithmic challenges across topics & difficulty levels.</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card shadow p-4 mb-4">
+            <h4 class="text-success">🧪 Submit Code</h4>
+            <p>Run your code and test against hidden cases.</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card shadow p-4 mb-4">
+            <h4 class="text-success">📊 Track Progress</h4>
+            <p>See your performance improve with each challenge.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

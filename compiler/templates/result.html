@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Execution Result</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: linear-gradient(to bottom right, #e6f4ea, #cce5ff);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 30px;
+        }
+        .box {
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            max-width: 960px;
+            margin: 0 auto;
+        }
+        pre {
+            background-color: #f4f4f4;
+            padding: 16px;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+
+<div class="box">
+    <h1 class="text-3xl font-bold text-center text-green-600 mb-8">💻 Execution Result</h1>
+
+    <p class="mb-3 text-gray-700"><strong>Language:</strong> {{ submission.language }}</p>
+
+    <p class="mb-2 text-gray-700"><strong>Your Code:</strong></p>
+    <pre class="mb-6">{{ submission.code }}</pre>
+
+    {% if is_run %}
+        <h2 class="text-xl font-semibold mb-4 text-blue-700">🔍 Output from Custom Input:</h2>
+        <pre class="bg-gray-100 p-4 rounded-lg text-sm text-black font-mono whitespace-pre-wrap border border-blue-400">
+{{ custom_output }}
+        </pre>
+    {% else %}
+        <h2 class="text-xl font-semibold mb-4 text-green-700">✅ Submission Verdict:</h2>
+        <pre class="bg-gray-100 p-4 rounded-lg text-sm text-black font-mono whitespace-pre-wrap border border-green-400">
+{{ submission.output_data }}
+        </pre>
+        <p class="mt-2 font-semibold text-gray-700">Verdict: {{ submission.verdict }}</p>
+    {% endif %}
+
+    <div class="mt-8 text-center">
+        <a href="{% url 'submit' %}" class="inline-block bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300">🔁 Try Another</a>
+    </div>
+</div>
+
+</body>
+</html>

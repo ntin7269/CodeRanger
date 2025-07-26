@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "C:\Users\Dell\Dropbox\PC\Desktop\ONLINE JUDGE\OJ\codes\0390d53f-b39e-4054-a86d-2dec59123b41.py", line 1, in <module>
+    huiukguk
+NameError: name 'huiukguk' is not defined
