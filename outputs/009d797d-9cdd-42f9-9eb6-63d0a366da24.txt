@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "C:\Users\Dell\Dropbox\PC\Desktop\ONLINE JUDGE\OJ\codes\009d797d-9cdd-42f9-9eb6-63d0a366da24.py", line 1, in <module>
+    kg
+NameError: name 'kg' is not defined

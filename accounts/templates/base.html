@@ -1,0 +1,223 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}CodeRangers{% endblock %}</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      color: #e2e8f0;
+    }
+
+    /* Navbar */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 2rem;
+      background: linear-gradient(90deg, #6366f1, #14b8a6);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .nav-left {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .nav-center {
+      display: flex;
+      gap: 4.5rem;
+    }
+
+    .nav-center a {
+      text-decoration: none;
+      color: white;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-center a:hover {
+      color: #d1fae5;
+    }
+
+    .nav-right {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    .btn {
+      border: none;
+      padding: 0.4rem 1rem;
+      border-radius: 0.5rem;
+      font-size: 0.95rem;
+      cursor: pointer;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .btn-signin {
+      background-color: rgba(255, 255, 255, 0.2);
+      color: white;
+    }
+
+    .btn-signin:hover {
+      background-color: rgba(255, 255, 255, 0.35);
+    }
+
+    .btn-signup {
+      background: linear-gradient(90deg, #6366f1, #14b8a6);
+      color: white;
+    }
+
+    .btn-signup:hover {
+      filter: brightness(1.15);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+    }
+
+    .disabled-link {
+      pointer-events: none;
+      opacity: 0.6;
+    }
+
+    /* Main Section */
+    .main-section {
+      min-height: calc(100vh - 64px);
+      padding: 0;
+    }
+
+    /* Footer */
+    footer {
+      background-color: #0f172a;
+      color: white;
+      padding: 2rem 2rem 0;
+    }
+
+    .footer-main {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+
+    .footer-column {
+      max-width: 250px;
+    }
+
+    .footer-column h3 {
+      font-size: 1.1rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .footer-column a {
+      display: block;
+      color: white;
+      text-decoration: none;
+      margin-bottom: 0.5rem;
+      font-size: 0.95rem;
+    }
+
+    .footer-column a:hover {
+      text-decoration: underline;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding: 1rem 0;
+      border-top: 1px solid #334155;
+      margin-top: 2rem;
+      font-size: 0.85rem;
+      color: #94a3b8;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header / Navbar -->
+  <header>
+    <nav>
+      <div class="nav-left">
+        <i class="fa-solid fa-code"></i> CodeRangers
+      </div>
+
+      <div class="nav-center">
+        <a href="/">Home</a>
+        <a href="/problems/">Problems</a>
+        <a href="/learn/">Learn</a>
+        <a href="/profile/">Profile</a>
+        
+      </div>
+
+      <div class="nav-right">
+        {% if user.is_authenticated %}
+          <span>Welcome, {{ user.username }}</span>
+          <a href="/auth/logout/" class="btn btn-signin">Logout</a>
+        {% else %}
+          {% if request.path == '/login/' %}
+            <span class="btn btn-signin disabled-link">Sign In</span>
+          {% else %}
+            <a href="/auth/login/" class="btn btn-signin">Sign In</a>
+          {% endif %}
+          {% if request.path == '/register/' %}
+            <span class="btn btn-signup disabled-link">Sign Up</span>
+          {% else %}
+            <a href="/auth/register/" class="btn btn-signup">Sign Up</a>
+          {% endif %}
+        {% endif %}
+      </div>
+    </nav>
+  </header>
+
+  <!-- Main Content Section -->
+  <section class="main-section">
+    {% block content %}{% endblock %}
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-main">
+      <div class="footer-column">
+        <h3>CodeRangers</h3>
+        <p>Master competitive Programming with structured practice problems and an integrated online judge.</p>
+      </div>
+      <div class="footer-column">
+        <h3>Quick Links</h3>
+        <a href="/">Home</a>
+        <a href="/problems/">Problems</a>
+        <a href="/learn/">Learning Paths</a>
+        <a href="/contests/">Contests</a>
+      </div>
+      <div class="footer-column">
+        <h3>Support</h3>
+        <a href="#">Help Center</a>
+        <a href="#">Contact Us</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      © 2025 CodeRangers. All rights reserved. Built with ❤️ for competitive programmers.
+    </div>
+  </footer>
+
+</body>
+</html>

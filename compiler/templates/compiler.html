@@ -7,22 +7,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="icon" href="{% static 'favicon.ico' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         body {
             min-height: 100vh;
-            background: linear-gradient(to bottom right, #e6f4ea, #cce5ff);
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            font-family: 'Poppins', sans-serif;
+            color: #e2e8f0;
         }
         .navbar {
-            background-color: #28a745;
+            background: linear-gradient(90deg, #6366f1, #14b8a6);
         }
         .coderangers-green {
-            color: #28a745;
+            background: linear-gradient(90deg, #14b8a6, #6366f1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-        .btn-green {
-            background-color: #28a745;
+        .btn-gradient {
+            background: linear-gradient(90deg, #6366f1, #14b8a6);
+            transition: all 0.3s ease;
         }
-        .btn-green:hover {
-            background-color: #218838;
+        .btn-gradient:hover {
+            filter: brightness(1.15);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+        }
+        textarea, select {
+            font-family: 'Fira Code', monospace;
+            background-color: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: #e2e8f0;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.5rem;
+            width: 100%;
+            appearance: none; /* removes default browser styles */
+        }
+        textarea:focus, select:focus {
+            outline: none;
+            border-color: #14b8a6;
+            box-shadow: 0 0 0 2px rgba(20,184,166,0.3);
+        }
+        select option {
+            background-color: #1e293b;
+            color: #e2e8f0;
+        }
+        pre {
+            font-family: 'Fira Code', monospace;
         }
     </style>
 </head>
@@ -45,9 +75,9 @@
 
 <!-- Compiler Form -->
 <div class="w-full px-4 sm:px-8 py-8">
-    <div class="max-w-7xl mx-auto bg-white rounded-3xl shadow-2xl p-8 md:p-10">
+    <div class="max-w-7xl mx-auto bg-gray-900 bg-opacity-80 backdrop-blur-md rounded-3xl shadow-2xl p-8 md:p-10 border border-gray-700">
         <h1 class="text-4xl font-bold text-center coderangers-green mb-4">Online Code Compiler</h1>
-        <p class="text-center text-gray-600 text-lg mb-10">Choose a problem, select a language, write your code and test it using custom input.</p>
+        <p class="text-center text-gray-400 text-lg mb-10">Choose a problem, select a language, write your code and test it using custom input.</p>
 
         <form method="post" class="grid grid-cols-1 xl:grid-cols-3 gap-8 w-full">
             {% csrf_token %}
@@ -57,55 +87,107 @@
             <div class="space-y-6 xl:col-span-1">
                 <!-- Problem Selector -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Select Problem</label>
-                    <div class="bg-gray-100 p-3 rounded-lg border border-gray-300">
+                    <label class="block text-sm font-medium text-gray-300 mb-1">Select Problem</label>
+                    <div class="p-3 rounded-lg">
                         {{ form.problem }}
                     </div>
                 </div>
 
                 <!-- Language Selector -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Select Language</label>
-                    <div class="bg-gray-100 p-3 rounded-lg border border-gray-300">
+                    <label class="block text-sm font-medium text-gray-300 mb-1">Select Language</label>
+                    <div class="p-3 rounded-lg">
                         {{ form.language }}
                     </div>
                 </div>
 
                 <!-- Sample Input -->
                 <div>
-                    <label for="sample_input_data" class="block text-sm font-medium text-gray-700 mb-1">Sample Input</label>
+                    <label for="sample_input_data" class="block text-sm font-medium text-gray-300 mb-1">Custom Input</label>
                     <textarea id="sample_input_data" name="sample_input_data" rows="6"
-                        class="w-full bg-blue-50 p-4 border border-blue-300 rounded-lg font-mono text-sm focus:ring-2 focus:ring-blue-400 resize-y"
+                        class="w-full p-4 rounded-lg text-sm resize-y"
                         placeholder="e.g.&#10;5 10"></textarea>
                 </div>
 
-                <!-- Buttons -->
-               
-                <div class="pt-4 grid grid-cols-2 gap-4">
-                    <button type="submit" name="action" value="run"
-                        class="w-full btn-green hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition duration-300">
-                        ▶️ Run Code
-                    </button>
-                    <button type="submit" name="action" value="submit"
-                        class="w-full btn-green hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition duration-300">
-                        ✅ Submit
-                    </button>
+                <!-- Output Box -->
+                <div id="output_section" class="mt-4">
+                    <label class="block text-sm font-medium text-gray-300 mb-1">Output</label>
+                    <pre class="bg-black text-green-400 p-4 rounded-lg overflow-x-auto text-sm" id="output_box"></pre>
                 </div>
 
+                <!-- Buttons -->
+                <div class="pt-4 grid grid-cols-2 gap-4">
+                    <button type="submit" name="action" value="run"
+                        class="w-full btn-gradient text-white font-semibold py-3 px-6 rounded-lg shadow-md">
+                        Run
+                    </button>
+                    <button type="submit" name="action" value="submit"
+                        class="w-full btn-gradient text-white font-semibold py-3 px-6 rounded-lg shadow-md">
+                        Submit
+                    </button>
+                </div>
             </div>
 
-            <!-- Right Column (Editor) -->
+            <!-- Code Editor -->
             <div class="xl:col-span-2">
-                <label class="block text-sm font-medium text-gray-700 mb-1">Code Editor</label>
+                <label class="block text-sm font-medium text-gray-300 mb-1">Code Editor</label>
                 <textarea name="code" rows="24"
-                    class="w-full h-full bg-gray-100 text-gray-800 font-mono text-sm p-5 rounded-lg border border-gray-300 resize-y focus:ring-2 focus:ring-green-500"
-                    placeholder="// Write your code here (C++, Python, etc)">
-                    {{ form.code.value|default_if_none:'' }}
-                </textarea>
+                    class="w-full h-full text-sm p-5 rounded-lg resize-y"
+                    placeholder="// Write your code here (C++, Python, etc)">{{ form.code.value|default_if_none:'' }}</textarea>
             </div>
         </form>
     </div>
 </div>
+
+<!-- Floating Button -->
+<a href="#output_section" id="output_fab"
+   class="hidden fixed bottom-6 right-6 bg-gradient-to-r from-purple-500 to-teal-400 text-white w-14 h-14 flex items-center justify-center rounded-full shadow-lg text-xl">
+   <img src="{% static 'images/arrow.png' %}" alt="Go to Output" class="w-8 h-8">
+</a>
+
+<!-- Toast -->
+<div id="toast" class="hidden fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg text-sm font-semibold">
+    Please write some code before running or submitting!
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const form = document.querySelector("form");
+    const codeEditor = form.querySelector("textarea[name='code']");
+    const outputBox = document.getElementById("output_box");
+    const toast = document.getElementById("toast");
+
+    function showToast(message) {
+        toast.textContent = message;
+        toast.classList.remove("hidden");
+        toast.classList.add("opacity-100");
+        setTimeout(() => {
+            toast.classList.add("hidden");
+        }, 2000);
+    }
+
+    form.addEventListener("submit", async (e) => {
+        const action = e.submitter.value;
+        const hasCode = codeEditor.value.trim().length > 0;
+
+        if (!hasCode) {
+            e.preventDefault();
+            showToast("Please write some code before running or submitting!");
+            return;
+        }
+
+        if (action === "run") {
+            e.preventDefault();
+            const formData = new FormData(form);
+            formData.append("ajax", "true");
+
+            const response = await fetch("", { method: "POST", body: formData });
+            const data = await response.json();
+            outputBox.textContent = data.output || "";
+        }
+    });
+});
+</script>
 
 </body>
 </html>

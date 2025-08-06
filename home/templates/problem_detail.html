@@ -1,140 +1,197 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ problem.title }}</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background: #f9fef9;
-        }
-        .navbar {
-            background-color: #28a745;
-        }
-        .navbar-brand, .nav-link {
-            color: white !important;
-            font-weight: 500;
-        }
-        .nav-link:hover {
-            text-decoration: underline;
-        }
-        .problem-container {
-            background: white;
-            border-radius: 10px;
-            padding: 30px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.05);
-        }
-        h1 {
-            color: #28a745;
-            font-weight: bold;
-        }
-        h4 {
-            color: #343a40;
-            margin-top: 20px;
-        }
-        pre {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 5px;
-            font-size: 1rem;
-            white-space: pre-wrap;
-            word-break: break-word;
-        }
-        p {
-            white-space: pre-wrap;
-        }
+{% extends "base.html" %}
+{% load static %}
+{% load custom_filters %}
 
-        .code-button {
-            display: block;
-            width: 100%;
-            background-color: #28a745;
-            border: none;
-            color: white;
-            font-size: 1.25rem;
-            font-weight: bold;
-            padding: 15px;
-            border-radius: 10px;
-            text-align: center;
-            margin-top: 30px;
-            transition: background-color 0.3s ease;
-            text-decoration: none;
-        }
-        .code-button:hover {
-            background-color: #218838;
-            color: white;
-            text-decoration: none;
-        }
-    </style>
+{% block title %}{{ problem.title }} | CodeRangers{% endblock %}
 
-    <!-- ✅ MathJax CDN -->
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async
-      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-</head>
-<body>
+{% block content %}
+<style>
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: #0f172a; /* dark navy background */
+        color: #e2e8f0;
+    }
 
-<nav class="navbar navbar-expand-lg">
-  <a class="navbar-brand" href="/">CodeRangers</a>
-  <div class="collapse navbar-collapse">
-    <ul class="navbar-nav ml-auto">
-      {% if request.user.is_authenticated %}
-        <li class="nav-item"><a class="nav-link" href="/problems/">Problems</a></li>
-        <li class="nav-item"><a class="nav-link" href="/auth/logout/">Logout</a></li>
-      {% else %}
-        <li class="nav-item"><a class="nav-link" href="/auth/login/">Login</a></li>
-        <li class="nav-item"><a class="nav-link" href="/auth/register/">Register</a></li>
-        <li class="nav-item"><a class="nav-link" href="/problems/">Problems</a></li>
-      {% endif %}
-    </ul>
-  </div>
-</nav>
+    /* Back Link */
+    .back-link {
+        display: inline-block;
+        margin-top: 1.5rem;
+        margin-bottom: 0.75rem;
+        color: #60a5fa;
+        font-weight: 500;
+        text-decoration: none;
+        transition: color 0.2s ease;
+    }
+    .back-link:hover {
+        color: #93c5fd;
+    }
 
-<div class="container mt-4">
-    <div class="problem-container">
-        <a href="{% url 'all_problems' %}" class="btn btn-secondary mb-3">← Back to All Problems</a>
+    /* Problem Card */
+    .problem-card {
+        background: #1e293b;
+        border-radius: 8px;
+        padding: 1.5rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
 
-        <h1 class="mb-3">{{ problem.title }}</h1>
+    /* Problem Title */
+    .problem-card h1 {
+        font-size: 1.6rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: #f1f5f9;
+    }
 
-        <p>
-            <strong>Difficulty:</strong> {{ problem.difficulty }} 
-            <strong>Time Limit:</strong> {{ problem.time_limit }}s 
-            <strong>Memory Limit:</strong> {{ problem.memory_limit }}MB
-        </p>
+    /* Difficulty badge */
+    .difficulty {
+        font-size: 0.75rem;
+        font-weight: 600;
+        padding: 3px 10px;
+        border-radius: 9999px;
+        margin-left: 10px;
+    }
+    .difficulty.Easy {
+        background-color: rgba(34,197,94,0.15);
+        color: #4ade80;
+    }
+    .difficulty.Medium {
+        background-color: rgba(234,179,8,0.15);
+        color: #facc15;
+    }
+    .difficulty.Hard {
+        background-color: rgba(239,68,68,0.15);
+        color: #f87171;
+    }
 
-        {% if problem.tags %}
-        <p><strong>Tags:</strong> {{ problem.tags }}</p>
-        {% endif %}
+    /* Tag badge */
+    .tag-badge {
+        display: inline-block;
+        font-size: 0.75rem;
+        padding: 4px 10px;
+        border-radius: 9999px;
+        font-weight: 500;
+        background-color: #334155;
+        color: #cbd5e1;
+        margin-right: 0.4rem;
+        margin-top: 0.3rem;
+        transition: background-color 0.25s ease;
+    }
+    .tag-badge:hover {
+        background-color: #475569;
+    }
 
-        <h4>Description:</h4>
-        <div>{{ problem.description|safe }}</div>
+    /* Section titles */
+    h2 {
+        font-size: 1.15rem;
+        font-weight: 600;
+        margin-top: 1.2rem;
+        margin-bottom: 0.6rem;
+        color: #f1f5f9;
+    }
 
-        <h4>Input Constraints:</h4>
-        <div>{{ problem.input_constraints|safe }}</div>
+    /* Paragraphs */
+    p {
+        line-height: 1.5;
+        color: #cbd5e1;
+    }
 
-        <h4>Output Format:</h4>
-        <div>{{ problem.output_format|safe }}</div>
+    /* Example cards */
+    .example-card {
+        background-color: #0f172a;
+        border-radius: 8px;
+        padding: 0.75rem;
+        margin-bottom: 0.75rem;
+        border: 1px solid #334155;
+    }
+    .example-card strong {
+        display: block;
+        margin-bottom: 0.2rem;
+        color: #f1f5f9;
+    }
 
-        <h4>Sample Input 1:</h4>
-        <pre>{{ problem.sample_input_1 }}</pre>
+    /* Preformatted blocks */
+    pre {
+        background: #1e293b;
+        padding: 0.6rem;
+        border-radius: 6px;
+        font-size: 0.88rem;
+        white-space: pre-wrap;
+        overflow-x: auto;
+        color: #e2e8f0;
+    }
 
-        <h4>Sample Output 1:</h4>
-        <pre>{{ problem.sample_output_1 }}</pre>
+    /* Constraints list */
+    ul {
+        padding-left: 1.1rem;
+        color: #cbd5e1;
+    }
+
+    /* Start coding button */
+    .start-btn {
+        display: inline-block;
+        background: linear-gradient(90deg, #3b82f6, #2563eb);
+        color: white;
+        font-weight: 500;
+        padding: 0.6rem 1.2rem;
+        border-radius: 8px;
+        text-decoration: none;
+        margin-top: 3.5rem;
+        margin-bottom: 4.5rem;
+        transition: background 0.3s ease, transform 0.15s ease;
+    }
+    .start-btn:hover {
+        background: linear-gradient(90deg, #60a5fa, #3b82f6);
+        transform: translateY(-1px);
+    }
+</style>
+
+<div class="container" style="max-width:100%; margin:1.5rem auto; padding:0 0.5rem;">
+    <a href="{% url 'all_problems' %}" class="back-link">← Back to Problems</a>
+
+    <div class="problem-card">
+        <h1>{{ problem.title }}</h1>
+
+        <div class="badges" style="margin-bottom:1rem;">
+            <span class="difficulty {{ problem.difficulty }}">{{ problem.difficulty }}</span>
+            {% for tag in problem.tags|split_by_comma %}
+                <span class="tag-badge">{{ tag }}</span>
+            {% endfor %}
+        </div>
+
+        <h2>Description</h2>
+        <p>{{ problem.description|safe }}</p>
+
+        {% if problem.sample_input_1 %}
+        <h2>Examples</h2>
+        <div class="example-card">
+            <strong>Example 1:</strong>
+            <p><strong>Input:</strong></p>
+            <pre>{{ problem.sample_input_1 }}</pre>
+            <p><strong>Output:</strong></p>
+            <pre>{{ problem.sample_output_1 }}</pre>
+        </div>
 
         {% if problem.sample_input_2 %}
-            <h4>Sample Input 2:</h4>
+        <div class="example-card">
+            <strong>Example 2:</strong>
+            <p><strong>Input:</strong></p>
             <pre>{{ problem.sample_input_2 }}</pre>
-
-            <h4>Sample Output 2:</h4>
+            <p><strong>Output:</strong></p>
             <pre>{{ problem.sample_output_2 }}</pre>
+        </div>
+        {% endif %}
         {% endif %}
 
-        <!-- ✅ New Code Button -->
-        <a href="{% url 'submit' %}?problem_id={{ problem.id }}" class="code-button">
-            🚀 Code Now
-        </a>
+        {% if problem.input_constraints %}
+        <h2>Constraints</h2>
+        <ul>
+            {% for constraint in problem.input_constraints|split_by_newline %}
+                <li>{{ constraint }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
 
+        <a href="{% url 'compiler:submit' %}?problem_id={{ problem.id }}" class="start-btn">Start Coding</a>
     </div>
 </div>
-
-</body>
-</html>
+{% endblock %}

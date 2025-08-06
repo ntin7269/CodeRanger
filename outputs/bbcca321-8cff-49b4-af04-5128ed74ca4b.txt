@@ -1,0 +1,3 @@
+  File "C:\Users\Dell\Dropbox\PC\Desktop\ONLINE JUDGE\OJ\codes\bbcca321-8cff-49b4-af04-5128ed74ca4b.py", line 3
+    b=int(input()) 
+IndentationError: unexpected indent

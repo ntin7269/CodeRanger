@@ -1,57 +1,102 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Execution Result</title>
+    <title>CodeRangers | Execution Result</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" href="{% static 'favicon.ico' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         body {
-            background: linear-gradient(to bottom right, #e6f4ea, #cce5ff);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            padding: 30px;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            font-family: 'Poppins', sans-serif;
+            color: #e2e8f0;
         }
-        .box {
-            background-color: white;
-            border-radius: 20px;
-            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-            padding: 30px;
-            max-width: 960px;
-            margin: 0 auto;
+        .navbar {
+            background: linear-gradient(90deg, #6366f1, #14b8a6);
+        }
+        .coderangers-green {
+            background: linear-gradient(90deg, #14b8a6, #6366f1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .btn-gradient {
+            background: linear-gradient(90deg, #6366f1, #14b8a6);
+            transition: all 0.3s ease;
+        }
+        .btn-gradient:hover {
+            filter: brightness(1.15);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
         }
         pre {
-            background-color: #f4f4f4;
-            padding: 16px;
-            border-radius: 8px;
-            overflow-x: auto;
+            font-family: 'Fira Code', monospace;
+        }
+        .flashy-btn {
+            animation: pulseGlow 1.5s infinite;
+        }
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 5px #ff6b6b, 0 0 10px #ff6b6b, 0 0 20px #ff6b6b; }
+            50% { box-shadow: 0 0 20px #ff4757, 0 0 30px #ff4757, 0 0 40px #ff4757; }
+            100% { box-shadow: 0 0 5px #ff6b6b, 0 0 10px #ff6b6b, 0 0 20px #ff6b6b; }
         }
     </style>
 </head>
 <body>
 
-<div class="box">
-    <h1 class="text-3xl font-bold text-center text-green-600 mb-8">💻 Execution Result</h1>
+<!-- Navbar -->
+<nav class="navbar flex justify-between items-center px-6 py-4 shadow-md">
+    <a href="/" class="text-white font-bold text-xl">CodeRangers</a>
+    <div class="flex space-x-4">
+        {% if request.user.is_authenticated %}
+            <a href="{% url 'all_problems' %}" class="text-white hover:underline">Problems</a>
+            <a href="/auth/logout/" class="text-white hover:underline">Logout</a>
+        {% else %}
+            <a href="/auth/login/" class="text-white hover:underline">Login</a>
+            <a href="/auth/register/" class="text-white hover:underline">Register</a>
+            <a href="{% url 'all_problems' %}" class="text-white hover:underline">Problems</a>
+        {% endif %}
+    </div>
+</nav>
 
-    <p class="mb-3 text-gray-700"><strong>Language:</strong> {{ submission.language }}</p>
+<!-- Result Box -->
+<div class="w-full px-4 sm:px-8 py-8">
+    <div class="max-w-7xl mx-auto bg-gray-900 bg-opacity-80 backdrop-blur-md rounded-3xl shadow-2xl p-8 md:p-10 border border-gray-700">
+        <h1 class="text-4xl font-bold text-center coderangers-green mb-8">💻 Execution Result</h1>
 
-    <p class="mb-2 text-gray-700"><strong>Your Code:</strong></p>
-    <pre class="mb-6">{{ submission.code }}</pre>
+        <p class="mb-3 text-gray-300"><strong>Language:</strong> {{ submission.language }}</p>
 
-    {% if is_run %}
-        <h2 class="text-xl font-semibold mb-4 text-blue-700">🔍 Output from Custom Input:</h2>
-        <pre class="bg-gray-100 p-4 rounded-lg text-sm text-black font-mono whitespace-pre-wrap border border-blue-400">
+        <p class="mb-2 text-gray-300 font-semibold ">Your Code:</p>
+        <pre class="bg-black text-green-400 p-4 rounded-lg text-sm whitespace-pre-wrap border border-gray-700">
+{{ submission.code }}
+        </pre>
+
+        {% if is_run %}
+            <h2 class="text-xl font-semibold mb-4 text-teal-400">🔍 Output from Custom Input:</h2>
+            <pre class="bg-black text-green-400 p-4 rounded-lg overflow-x-auto text-sm border border-teal-500">
 {{ custom_output }}
-        </pre>
-    {% else %}
-        <h2 class="text-xl font-semibold mb-4 text-green-700">✅ Submission Verdict:</h2>
-        <pre class="bg-gray-100 p-4 rounded-lg text-sm text-black font-mono whitespace-pre-wrap border border-green-400">
+            </pre>
+        {% else %}
+            <h2 class="text-xl font-semibold mb-4 text-green-400 margin-top:10rem"> Submission Verdict:</h2>
+            <pre class="bg-black text-green-400 p-4 rounded-lg overflow-x-auto text-sm border border-green-500">
 {{ submission.output_data }}
-        </pre>
-        <p class="mt-2 font-semibold text-gray-700">Verdict: {{ submission.verdict }}</p>
-    {% endif %}
+            </pre>
+            <p class="mt-2 font-semibold text-gray-300">Verdict: {{ submission.verdict }}</p>
+        {% endif %}
 
-    <div class="mt-8 text-center">
-        <a href="{% url 'submit' %}" class="inline-block bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300">🔁 Try Another</a>
+        <div class="mt-8 flex flex-col md:flex-row justify-center gap-4">
+            <a href="{% url 'compiler:submit' %}" 
+               class="btn-gradient text-white font-semibold py-3 px-6 rounded-lg shadow-md">
+                🔁 Try Another
+            </a>
+            <a href="{% url 'compiler:ai_review' submission.id %}" 
+               class="flashy-btn bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 hover:from-yellow-500 hover:to-pink-500 text-white font-extrabold py-3 px-8 rounded-full shadow-lg transform hover:scale-110 transition duration-300">
+                🚀 Ranger Review
+            </a>
+        </div>
     </div>
 </div>
 

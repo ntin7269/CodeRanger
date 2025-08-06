@@ -1,0 +1,80 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CodeRangers | AI Code Review</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" href="{% static 'favicon.ico' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            font-family: 'Poppins', sans-serif;
+            color: #e2e8f0;
+        }
+        .navbar {
+            background: linear-gradient(90deg, #6366f1, #14b8a6);
+        }
+        .coderangers-green {
+            background: linear-gradient(90deg, #14b8a6, #6366f1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .btn-gradient {
+            background: linear-gradient(90deg, #6366f1, #14b8a6);
+            transition: all 0.3s ease;
+        }
+        .btn-gradient:hover {
+            filter: brightness(1.15);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+        }
+        pre {
+            font-family: 'Fira Code', monospace;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar flex justify-between items-center px-6 py-4 shadow-md">
+    <a href="/" class="text-white font-bold text-xl">CodeRangers</a>
+    <div class="flex space-x-4">
+        {% if request.user.is_authenticated %}
+            <a href="{% url 'all_problems' %}" class="text-white hover:underline">Problems</a>
+            <a href="/auth/logout/" class="text-white hover:underline">Logout</a>
+        {% else %}
+            <a href="/auth/login/" class="text-white hover:underline">Login</a>
+            <a href="/auth/register/" class="text-white hover:underline">Register</a>
+            <a href="{% url 'all_problems' %}" class="text-white hover:underline">Problems</a>
+        {% endif %}
+    </div>
+</nav>
+
+<!-- AI Review Content -->
+<div class="w-full px-4 sm:px-8 py-8">
+    <div class="max-w-7xl mx-auto bg-gray-900 bg-opacity-80 backdrop-blur-md rounded-3xl shadow-2xl p-8 md:p-10 border border-gray-700">
+        <h1 class="text-4xl font-bold text-center coderangers-green mb-8">🤖 Ranger Review</h1>
+
+        <h4 class="text-xl font-semibold text-gray-300 mb-2">Your Code:</h4>
+        <pre class="bg-black text-green-400 p-4 rounded-lg overflow-x-auto text-sm border border-gray-700 whitespace-pre-wrap">{{ submission.code }}</pre>
+
+        <hr class="my-6 border-gray-600">
+
+        <h4 class="text-xl font-semibold text-gray-300 mb-2">Ranger Suggestions:</h4>
+        <pre class="bg-gray-800 text-yellow-300 p-4 rounded-lg overflow-x-auto text-sm border border-yellow-500 whitespace-pre-wrap">{{ ai_review }}</pre>
+
+        <div class="mt-8">
+            <a href="{% url 'compiler:submit' %}?problem_id={{ submission.problem.id }}" 
+               class="btn-gradient text-white font-semibold py-3 px-6 rounded-lg shadow-md">
+                 Back
+            </a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

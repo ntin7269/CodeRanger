@@ -1,5 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse
+
 from compiler.forms import CodeSubmissionForm
 from django.conf import settings
 import os
@@ -7,13 +8,66 @@ import uuid
 import subprocess
 from pathlib import Path
 from home.models import CodingProblem, TestCase
+from django.http import JsonResponse
+
+from .models import CodeSubmission
+
+import google.generativeai as genai
+
+from dotenv import load_dotenv
+load_dotenv()
+
+
+def ai_review(request, submission_id):
+    submission = get_object_or_404(CodeSubmission, id=submission_id)
+    code = submission.code
+    language = submission.language
+
+    try:
+        # Configure AI
+        genai.configure(api_key="AIzaSyCegnTdDjnaHhbEDjHm5jTY2giqyVIKd14")
+        model = genai.GenerativeModel("gemini-1.5-flash")
+
+        prompt = f"""
+        You are an expert programmer. Please review this {language.upper()} code.
+        1. Identify logical errors, if any.
+        2. Suggest improvements or cleaner versions.
+        3. Keep your answer short and practical.
+
+        Code:
+        {code}
+        """
+
+        response = model.generate_content(prompt)
+        ai_review_text = response.text.strip()
+
+    except Exception as e:
+        ai_review_text = f"Error fetching AI review: {str(e)}"
+
+    return render(request, "ai_review.html", {
+        "submission": submission,
+        "ai_review": ai_review_text
+    })
+
+
 
 def submit(request):
     problem_id = request.GET.get("problem_id")
 
     if request.method == "POST":
         form = CodeSubmissionForm(request.POST)
-        action = request.POST.get("action")  # <-- Get which button was clicked
+        action = request.POST.get("action")
+
+        if request.POST.get("ajax") == "true" and action == "run":
+            if form.is_valid():
+                code = form.cleaned_data["code"]
+                language = form.cleaned_data["language"]
+                input_data = request.POST.get("sample_input_data", "")
+                output = run_code(language, code, input_data)
+                return JsonResponse({"output": output})
+            else:
+                return JsonResponse({"output": "Invalid form data."})
+
 
         if form.is_valid():
             form.instance.input_data = request.POST.get("sample_input_data", "")
@@ -21,17 +75,10 @@ def submit(request):
             code = submission.code
             language = submission.language
 
-            # Handle Run (custom input only)
-            if action == "run":
-                custom_input = form.instance.input_data.strip()
-                result_raw = run_code(language, code, custom_input)
-                submission.output_data = result_raw
-                submission.verdict = "N/A"
-                submission.save()
-                return render(request, "result.html", {"submission": submission})
 
-            # Handle Submit (test case based)
-            elif action == "submit":
+
+            if action == "submit":
+                # same as before...
                 test_cases = submission.problem.test_cases.all()
                 all_passed = True
                 full_output = ""
@@ -62,6 +109,9 @@ def submit(request):
                 submission.save()
 
                 return render(request, "result.html", {"submission": submission})
+
+            
+            
 
     else:
         form = CodeSubmissionForm()

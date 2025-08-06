@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "C:\Users\Dell\Dropbox\PC\Desktop\ONLINE JUDGE\OJ\codes\19764dd6-ee61-49c6-94c4-2e7873fbce98.py", line 1, in <module>
+    vukyf
+NameError: name 'vukyf' is not defined
