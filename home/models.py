@@ -1,4 +1,7 @@
 from django.db import models
+from django.contrib.auth.models import User
+from django_ckeditor_5.fields import CKEditor5Field
+
 
 class CodingProblem(models.Model):
     title = models.CharField(max_length=255)
@@ -7,7 +10,8 @@ class CodingProblem(models.Model):
     difficulty = models.CharField(max_length=50)
     tags = models.CharField(max_length=255)
 
-    description = models.TextField()
+    description = CKEditor5Field('Description', config_name='default')
+
     input_constraints = models.TextField()
     output_format = models.TextField()
 
@@ -20,7 +24,9 @@ class CodingProblem(models.Model):
 
     def __str__(self):
         return self.title
-    
+
+
+ 
 
 # home/models.py
 
@@ -32,4 +38,14 @@ class TestCase(models.Model):
 
     def __str__(self):
         return f"TestCase for {self.problem.title}"
+    
+
+class SolvedProblem(models.Model):
+    """This table stores problems a user has solved once, to speed up checks."""
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    problem = models.ForeignKey(CodingProblem, on_delete=models.CASCADE)
+    solved_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'problem')  # Avoid duplicates
 

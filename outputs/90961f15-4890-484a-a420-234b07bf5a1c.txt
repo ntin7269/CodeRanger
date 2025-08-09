@@ -1,0 +1,2 @@
+C:\Users\Dell\Dropbox\PC\Desktop\ONLINE JUDGE\OJ\codes\90961f15-4890-484a-a420-234b07bf5a1c.cpp: In function 'int main()':
+C:\Users\Dell\Dropbox\PC\Desktop\ONLINE JUDGE\OJ\codes\90961f15-4890-484a-a420-234b07bf5a1c.cpp:35:1: error: expected '}' at end of input

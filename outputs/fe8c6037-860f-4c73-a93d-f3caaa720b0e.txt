@@ -1,0 +1,3 @@
+C:\Users\Dell\Dropbox\PC\Desktop\ONLINE JUDGE\OJ\codes\fe8c6037-860f-4c73-a93d-f3caaa720b0e.cpp: In function 'int main()':
+C:\Users\Dell\Dropbox\PC\Desktop\ONLINE JUDGE\OJ\codes\fe8c6037-860f-4c73-a93d-f3caaa720b0e.cpp:9:5: error: expected primary-expression before '/' token
+C:\Users\Dell\Dropbox\PC\Desktop\ONLINE JUDGE\OJ\codes\fe8c6037-860f-4c73-a93d-f3caaa720b0e.cpp:9:6: error: 'FKLFERGJEKA' was not declared in this scope

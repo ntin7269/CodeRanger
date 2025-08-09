@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<!-- Include Tailwind & custom CSS here so layout stays same -->
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+<div class="bg-gray-900 text-white p-8 min-h-screen">
+  <div class="max-w-4xl mx-auto">
+    <!-- Profile Card -->
+    <div class="bg-gray-800 p-6 rounded-xl shadow-lg flex items-center space-x-4">
+      <img src="{{ profile.profile_pic.url|default:'/static/images/ranger.png' }}"
+           alt="Profile Picture"
+           class="w-20 h-20 rounded-full border-4 border-purple-500">
+      <div>
+        <h1 class="text-2xl font-bold text-purple-400">{{ profile.ranger_name }}</h1>
+        <p class="text-lg">{{ profile.user.username }}</p>
+        <p class="text-sm text-gray-400">{{ profile.user.email }}</p>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="grid grid-cols-4 gap-4 mt-8">
+      <div class="bg-gray-800 p-4 rounded-xl text-center">
+        <p class="text-gray-400">Solved</p>
+        <p class="text-2xl font-bold">{{ solved_total }}/{{ total_problems }}</p>
+      </div>
+      {% for diff, count in solved_by_diff.items %}
+      <div class="bg-gray-800 p-4 rounded-xl text-center">
+        <p class="text-gray-400">{{ diff }}</p>
+        <p class="text-2xl font-bold">{{ count }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -7,12 +7,15 @@ import os
 import uuid
 import subprocess
 from pathlib import Path
-from home.models import CodingProblem, TestCase
+
 from django.http import JsonResponse
+from home.models import CodingProblem, TestCase, SolvedProblem 
 
 from .models import CodeSubmission
 
 import google.generativeai as genai
+from django.utils import timezone
+
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -101,8 +104,20 @@ def submit(request):
                         )
                         break
 
+                from django.utils import timezone
+
                 if all_passed:
                     full_output = "✅ All test cases passed."
+                    solved, created = SolvedProblem.objects.get_or_create(
+                        user=request.user,
+                        problem=submission.problem,
+                        defaults={"solved_at": timezone.now()}
+                    )
+                    if not created:
+                        # If already solved before, update solved_at to now
+                        solved.solved_at = timezone.now()
+                        solved.save()
+
 
                 submission.output_data = full_output
                 submission.verdict = "Accepted" if all_passed else "Wrong Answer"

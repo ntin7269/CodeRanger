@@ -146,29 +146,38 @@
     </div>
 
     {% for prob in all_problems %}
-        <div class="problem-card">
-            <div class="left-side">
-                <div>
-                    <span class="problem-title">{{ prob.title }}</span>
-                    <span class="difficulty {{ prob.difficulty }}">{{ prob.difficulty }}</span>
-                    {% if prob.type %}
-                        <span class="type-badge">{{ prob.type }}</span>
-                    {% endif %}
-                </div>
-                <div class="tags-container">
-                    {% for tag in prob.tags|split_by_comma %}
-                        <span class="tag">{{ tag }}</span>
-                    {% endfor %}
-                </div>
-            </div>
+    <div class="problem-card {% if prob.id in solved_ids %}bg-green-900{% endif %}">
+        <div class="left-side">
             <div>
-                <a href="{% url 'problem_detail' prob.id %}">
-                    <button class="solve-btn">Solve</button>
-                </a>
+                <span class="problem-title">{{ prob.title }}</span>
+                <span class="difficulty {{ prob.difficulty }}">{{ prob.difficulty }}</span>
+                {% if prob.type %}
+                    <span class="type-badge">{{ prob.type }}</span>
+                {% endif %}
+                <!-- Status -->
+                <span>
+                    {% if prob.id in solved_ids %}
+                        ✅ Solved
+                    {% else %}
+                        
+                    {% endif %}
+                </span>
+            </div>
+            <div class="tags-container">
+                {% for tag in prob.tags|split_by_comma %}
+                    <span class="tag">{{ tag }}</span>
+                {% endfor %}
             </div>
         </div>
-    {% empty %}
-        <p style="padding-left:25px;">No problems available.</p>
-    {% endfor %}
+        <div>
+            <a href="{% url 'problem_detail' prob.id %}">
+                <button class="solve-btn">Solve</button>
+            </a>
+        </div>
+    </div>
+{% empty %}
+    <p style="padding-left:25px;">No problems available.</p>
+{% endfor %}
+
 </div>
 {% endblock %}

@@ -1,0 +1,4 @@
+  File "C:\Users\Dell\Dropbox\PC\Desktop\ONLINE JUDGE\OJ\codes\f4dc7ea5-e613-4991-8350-6e9b6818ef9a.py", line 3
+    using namespace std;
+          ^^^^^^^^^
+SyntaxError: invalid syntax

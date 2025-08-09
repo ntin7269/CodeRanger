@@ -1,0 +1,8 @@
+from django.apps import AppConfig
+
+class UserProgressConfig(AppConfig):
+    default_auto_field = 'django.db.models.BigAutoField'
+    name = 'user_progress'
+
+    def ready(self):
+        import user_progress.signals

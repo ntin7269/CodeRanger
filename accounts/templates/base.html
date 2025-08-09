@@ -161,7 +161,7 @@
       <div class="nav-center">
         <a href="/">Home</a>
         <a href="/problems/">Problems</a>
-        <a href="/learn/">Learn</a>
+        
         <a href="/profile/">Profile</a>
         
       </div>
@@ -186,6 +186,17 @@
     </nav>
   </header>
 
+  {% if messages %}
+  <div style="padding: 1rem; margin: 1rem; border-radius: 8px;">
+    {% for message in messages %}
+      <div style="background-color: #1e293b; color: #f8fafc; padding: 0.75rem; margin-bottom: 0.5rem; border-left: 4px solid {% if message.tags == 'error' %}#ef4444{% elif message.tags == 'success' %}#10b981 {% else %}#3b82f6{% endif %};">
+        {{ message }}
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+
   <!-- Main Content Section -->
   <section class="main-section">
     {% block content %}{% endblock %}
@@ -202,8 +213,8 @@
         <h3>Quick Links</h3>
         <a href="/">Home</a>
         <a href="/problems/">Problems</a>
-        <a href="/learn/">Learning Paths</a>
-        <a href="/contests/">Contests</a>
+        <a href="/profile/">Profile</a>
+        
       </div>
       <div class="footer-column">
         <h3>Support</h3>
