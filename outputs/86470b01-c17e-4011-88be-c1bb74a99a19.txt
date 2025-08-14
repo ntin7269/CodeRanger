@@ -1,4 +1,0 @@
-Traceback (most recent call last):
-  File "C:\Users\Dell\Dropbox\PC\Desktop\ONLINE JUDGE\OJ\codes\86470b01-c17e-4011-88be-c1bb74a99a19.py", line 1, in <module>
-    wff
-NameError: name 'wff' is not defined

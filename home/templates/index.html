@@ -181,8 +181,8 @@
     <span class="typing-text" id="typing"></span>
   </h1>
   <p>Learn algorithms, solve problems, and compete with others. Your journey to becoming a coding expert starts here.</p>
-  <a href="/auth/register/" class="btn btn-primary">Get Started Free</a>
-  <a href="/auth/login/" class="btn btn-secondary">Sign In</a>
+  <!-- <a href="/auth/register/" class="btn btn-primary">Get Started Free</a>
+  <a href="/auth/login/" class="btn btn-secondary">Sign In</a> -->
 </section>
 
 <!-- Features Introduction -->
@@ -243,29 +243,16 @@
   const typingText = document.getElementById("typing");
   const fullText = "aster Competitive Programming";
   let index = 0;
-  let forward = true;
 
-  function typeLoop() {
-    if (forward) {
-      if (index < fullText.length) {
-        typingText.textContent += fullText[index];
-        index++;
-      } else {
-        forward = false;
-        setTimeout(typeLoop, 1500); // pause before deleting
-        return;
-      }
-    } else {
-      if (index > 0) {
-        typingText.textContent = fullText.substring(0, index - 1);
-        index--;
-      } else {
-        forward = true;
-      }
+  function typeOnce() {
+    if (index < fullText.length) {
+      typingText.textContent += fullText[index];
+      index++;
+      setTimeout(typeOnce, 50); // speed of typing
     }
-    setTimeout(typeLoop, forward ? 50 : Infinity);
   }
 
-  document.addEventListener("DOMContentLoaded", typeLoop);
+  document.addEventListener("DOMContentLoaded", typeOnce);
 </script>
+
 {% endblock %}

@@ -1,0 +1,64 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pdb
+*.pyc
+*$py.class
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+media/
+
+# Environment variables
+.env
+
+# IDEs & editors
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Virtual environments
+venv/
+env/
+.myenv/
+myenv/
+ENV/
+.venv/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Byte-compiled / optimized / DLL files
+*.so
+*.dll
+*.dylib
+
+# Testing
+.coverage
+coverage.xml
+.pytest_cache/
+nosetests.xml
+htmlcov/
+
+# Migrations (optional, if you want to ignore them)
+# */migrations/
+# !*/migrations/__init__.py
+
+# Compiled C extensions
+*.c
+*.o
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Static files build (optional for collectstatic)
+staticfiles/
+static/

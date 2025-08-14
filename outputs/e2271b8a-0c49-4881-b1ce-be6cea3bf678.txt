@@ -1,4 +1,0 @@
-Traceback (most recent call last):
-  File "C:\Users\Dell\Dropbox\PC\Desktop\ONLINE JUDGE\OJ\codes\e2271b8a-0c49-4881-b1ce-be6cea3bf678.py", line 1, in <module>
-    uff
-NameError: name 'uff' is not defined

@@ -1,5 +1,0 @@
-Traceback (most recent call last):
-  File "C:\Users\Dell\Dropbox\PC\Desktop\ONLINE JUDGE\OJ\codes\73be11e4-b450-4c1b-8aa7-152271a9f980.py", line 1, in <module>
-    a=int(input())
-          ^^^^^^^
-EOFError: EOF when reading a line

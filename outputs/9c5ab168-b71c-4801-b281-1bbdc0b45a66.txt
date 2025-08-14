@@ -1,4 +1,0 @@
-Traceback (most recent call last):
-  File "C:\Users\Dell\Dropbox\PC\Desktop\ONLINE JUDGE\OJ\codes\9c5ab168-b71c-4801-b281-1bbdc0b45a66.py", line 1, in <module>
-    fyjfj
-NameError: name 'fyjfj' is not defined

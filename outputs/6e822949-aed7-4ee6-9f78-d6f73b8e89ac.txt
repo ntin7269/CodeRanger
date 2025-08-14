@@ -1,5 +1,0 @@
-Traceback (most recent call last):
-  File "C:\Users\Dell\Dropbox\PC\Desktop\ONLINE JUDGE\OJ\codes\6e822949-aed7-4ee6-9f78-d6f73b8e89ac.py", line 1, in <module>
-    a=fdvd
-      ^^^^
-NameError: name 'fdvd' is not defined

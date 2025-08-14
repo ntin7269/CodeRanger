@@ -7,7 +7,6 @@ from django.contrib.auth import authenticate,login,logout
 # Create your views here.
 
 def register_user(request):
-    
     if request.method == 'POST':
         username = request.POST.get('username')
         email = request.POST.get('email')
@@ -26,18 +25,13 @@ def register_user(request):
             messages.error(request, 'Passwords do not match')
             return redirect('/auth/register/')
 
-        user = User.objects.create_user(username=username, email=email)
-        user.set_password(password)
-        user.save()
+        # ✅ Create user and set password in one step
+        User.objects.create_user(username=username, email=email, password=password)
 
         messages.success(request, 'User created successfully. Please log in.')
         return redirect('/auth/login/')
 
-    context = {
-        'info_message': 'Please register to continue.'
-    }
-    return render(request, 'register.html', context)
-
+    return render(request, 'register.html', {'info_message': 'Please register to continue.'})
 
 def login_user(request):
 

@@ -1,4 +1,0 @@
-  File "C:\Users\Dell\Dropbox\PC\Desktop\ONLINE JUDGE\OJ\codes\c2b11630-4da8-4382-8f47-3745a54bb8d6.py", line 7
-    for i in range (1:10):
-                     ^
-SyntaxError: invalid syntax

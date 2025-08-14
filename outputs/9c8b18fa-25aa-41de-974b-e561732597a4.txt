@@ -1,2 +1,0 @@
-C:\Users\Dell\Dropbox\PC\Desktop\ONLINE JUDGE\OJ\codes\9c8b18fa-25aa-41de-974b-e561732597a4.cpp: In function 'int main()':
-C:\Users\Dell\Dropbox\PC\Desktop\ONLINE JUDGE\OJ\codes\9c8b18fa-25aa-41de-974b-e561732597a4.cpp:13:14: error: 'print' was not declared in this scope

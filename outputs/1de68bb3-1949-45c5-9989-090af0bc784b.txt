@@ -1,4 +1,0 @@
-Traceback (most recent call last):
-  File "C:\Users\Dell\Dropbox\PC\Desktop\ONLINE JUDGE\OJ\codes\1de68bb3-1949-45c5-9989-090af0bc784b.py", line 1, in <module>
-    guhkj
-NameError: name 'guhkj' is not defined

@@ -1,4 +1,0 @@
-Traceback (most recent call last):
-  File "C:\Users\Dell\Dropbox\PC\Desktop\ONLINE JUDGE\OJ\codes\636b2552-c603-4433-903c-a6b3ac027e0b.py", line 1, in <module>
-    fkgh
-NameError: name 'fkgh' is not defined

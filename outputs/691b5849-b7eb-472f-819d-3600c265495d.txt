@@ -1,4 +1,0 @@
-Traceback (most recent call last):
-  File "C:\Users\Dell\Dropbox\PC\Desktop\ONLINE JUDGE\OJ\codes\691b5849-b7eb-472f-819d-3600c265495d.py", line 1, in <module>
-    hkufg
-NameError: name 'hkufg' is not defined

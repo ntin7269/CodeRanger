@@ -1,4 +1,0 @@
-Traceback (most recent call last):
-  File "C:\Users\Dell\Dropbox\PC\Desktop\ONLINE JUDGE\OJ\codes\ac8f1c12-7f36-4054-8e51-2200925d9803.py", line 1, in <module>
-    kb
-NameError: name 'kb' is not defined

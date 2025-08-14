@@ -8,9 +8,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="icon" href="{% static 'favicon.ico' %}">
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
-        /* this is comment */
-    
         body {
             min-height: 100vh;
             background: linear-gradient(135deg, #0f172a, #1e293b);
@@ -34,8 +33,24 @@
             transform: translateY(-1px);
             box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
         }
-        pre {
+        pre, code {
             font-family: 'Fira Code', monospace;
+            background-color: #1e293b;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+        }
+        /* Make markdown lists and headers nice */
+        #aiReview h1, #aiReview h2, #aiReview h3 {
+            color: #38bdf8;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        #aiReview p {
+            margin: 0.5rem 0;
+        }
+        #aiReview ul {
+            list-style: disc;
+            margin-left: 1.5rem;
         }
     </style>
 </head>
@@ -67,7 +82,7 @@
         <hr class="my-6 border-gray-600">
 
         <h4 class="text-xl font-semibold text-gray-300 mb-2">Ranger Suggestions:</h4>
-        <pre class="bg-gray-800 text-yellow-300 p-4 rounded-lg overflow-x-auto text-sm border border-yellow-500 whitespace-pre-wrap">{{ ai_review }}</pre>
+        <div id="aiReview" class="prose prose-invert max-w-none"></div>
 
         <div class="mt-8">
             <a href="{% url 'compiler:submit' %}?problem_id={{ submission.problem.id }}" 
@@ -77,6 +92,20 @@
         </div>
     </div>
 </div>
+
+<!-- Render Markdown on Page Load -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const rawMarkdown = "{{ ai_review|escapejs }}";
+        console.log("AI Review raw:", rawMarkdown); // Debug
+        if (rawMarkdown.trim()) {
+            document.getElementById("aiReview").innerHTML = marked.parse(rawMarkdown);
+        } else {
+            document.getElementById("aiReview").innerHTML = "<p class='text-gray-400'>No AI review available.</p>";
+        }
+    });
+</script>
+
 
 </body>
 </html>

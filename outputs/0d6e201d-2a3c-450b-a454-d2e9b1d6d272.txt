@@ -1,4 +1,0 @@
-Traceback (most recent call last):
-  File "C:\Users\Dell\Dropbox\PC\Desktop\ONLINE JUDGE\OJ\codes\0d6e201d-2a3c-450b-a454-d2e9b1d6d272.py", line 1, in <module>
-    dfsht
-NameError: name 'dfsht' is not defined

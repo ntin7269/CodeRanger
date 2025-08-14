@@ -1,0 +1,2 @@
+C:\Users\Dell\Dropbox\PC\Desktop\ONLINE JUDGE\OJ\codes\1976cf81-85e7-47a0-ad70-dee408baeb5b.cpp: In function 'int main()':
+C:\Users\Dell\Dropbox\PC\Desktop\ONLINE JUDGE\OJ\codes\1976cf81-85e7-47a0-ad70-dee408baeb5b.cpp:11:5: error: 'sdfojf' was not declared in this scope

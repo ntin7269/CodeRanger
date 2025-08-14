@@ -41,6 +41,27 @@
             transform: translateY(-1px);
             box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
         }
+        
+        /* Submit button green tint */
+        .btn-gradient-submit {
+            background: linear-gradient(90deg, #22c55e, #16a34a); /* green shades */
+            transition: all 0.3s ease;
+        }
+        .btn-gradient-submit:hover {
+            filter: brightness(1.15);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4);
+        }
+        /* Reset button amber/orange tint */
+        .btn-gradient-reset {
+            background: linear-gradient(90deg, #f59e0b, #d97706);
+            transition: all 0.3s ease;
+        }
+        .btn-gradient-reset:hover {
+            filter: brightness(1.15);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+        }
         textarea, select {
             font-family: 'Fira Code', monospace;
             background-color: rgba(255,255,255,0.05);
@@ -144,7 +165,7 @@
                         Run
                     </button>
                     <button type="submit" name="action" value="submit"
-                        class="w-full btn-gradient text-white font-semibold py-3 px-6 rounded-lg shadow-md">
+                        class="w-full btn-gradient-submit text-white font-semibold py-3 px-6 rounded-lg shadow-md">
                         Submit
                     </button>
                 </div>
@@ -154,6 +175,14 @@
             <div class="xl:col-span-2">
                 <label class="block text-sm font-medium text-gray-300 mb-1">Code Editor</label>
                 <textarea id="code" name="code">{{ form.code.value|default_if_none:'' }}</textarea>
+
+                <!-- Reset Button (aligned right, same styling) -->
+                <div class="flex justify-end mt-3">
+                    <button type="button" id="resetCodeBtn"
+                        class="btn-gradient-reset text-white font-semibold py-2 px-4 rounded-lg shadow-md">
+                        Reset Code
+                    </button>
+                </div>
             </div>
         </form>
     </div>
@@ -223,31 +252,68 @@ const codeMirrorEditor = CodeMirror.fromTextArea(document.getElementById("code")
 });
 
 const languageSelector = document.querySelector("select[name='language']");
+
+// Default templates
 const templates = {
     cpp: `#include <iostream>\nusing namespace std;\n\nint main() {\n    // your code here\n    return 0;\n}`,
     c: `#include <stdio.h>\n\nint main() {\n    // your code here\n    return 0;\n}`,
     py: `# your code here`
 };
 
-function setModeAndTemplate(lang) {
-    if (!codeMirrorEditor) return;
+// Save code whenever edited
+codeMirrorEditor.on("change", () => {
+    const lang = languageSelector.value;
+    localStorage.setItem(`savedCode_${lang}`, codeMirrorEditor.getValue());
+});
+
+// Load saved code or template for a language
+function loadCode(lang) {
+    let savedCode = localStorage.getItem(`savedCode_${lang}`);
+    if (savedCode && savedCode.trim() !== "") {
+        codeMirrorEditor.setValue(savedCode);
+    } else {
+        codeMirrorEditor.setValue(templates[lang] || "");
+    }
+    setMode(lang);
+}
+
+// Set CodeMirror syntax highlighting mode
+function setMode(lang) {
     let mode = "text/x-c++src";
     if (lang === "py") mode = "python";
     else if (lang === "c") mode = "text/x-csrc";
-
     codeMirrorEditor.setOption("mode", mode);
-    codeMirrorEditor.setValue(templates[lang] || "");
 }
 
+// When language changes, save it and load its code
 if (languageSelector) {
     languageSelector.addEventListener("change", (e) => {
-        const lang = e.target.value;
-        setModeAndTemplate(lang);
+        const newLang = e.target.value;
+        localStorage.setItem("lastLanguage", newLang);
+        loadCode(newLang);
     });
 
-    // Initial load
-    setModeAndTemplate(languageSelector.value);
+    // Restore last selected language from storage
+    const lastLang = localStorage.getItem("lastLanguage");
+    if (lastLang && templates[lastLang] !== undefined) {
+        languageSelector.value = lastLang;
+    }
+
+    // Initial load for that language
+    loadCode(languageSelector.value);
 }
+
+// Reset button handler
+document.getElementById('resetCodeBtn').addEventListener('click', () => {
+    const lang = languageSelector.value;
+    // load default template for current language
+    codeMirrorEditor.setValue(templates[lang] || "");
+    // remove saved code for this language so next load uses default
+    localStorage.removeItem(`savedCode_${lang}`);
+    // clear output box
+    const out = document.getElementById('output_box');
+    if (out) out.textContent = '';
+});
 </script>
 
 </body>

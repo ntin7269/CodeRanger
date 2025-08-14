@@ -21,35 +21,40 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
+
+
 def ai_review(request, submission_id):
     submission = get_object_or_404(CodeSubmission, id=submission_id)
     code = submission.code
     language = submission.language
+    problem_statement = submission.problem.description  # ✅ Get problem statement
 
     try:
-        # Configure AI
-        genai.configure(api_key="AIzaSyCegnTdDjnaHhbEDjHm5jTY2giqyVIKd14")
+        genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+
         model = genai.GenerativeModel("gemini-1.5-flash")
 
         prompt = f"""
-        You are an expert programmer. Please review this {language.upper()} code.
-        1. Identify logical errors, if any.
-        2. Suggest improvements or cleaner versions.
-        3. Keep your answer short and practical.
+Below is a coding problem followed by a submitted {language.upper()} code.
 
-        Code:
-        {code}
-        """
+--- Problem Statement ---
+{problem_statement}
+
+--- Submitted Code ---
+{code}
+
+Please review the code and suggest improvements.
+"""
 
         response = model.generate_content(prompt)
-        ai_review_text = response.text.strip()
+        ai_review = response.text.strip()
 
     except Exception as e:
-        ai_review_text = f"Error fetching AI review: {str(e)}"
+        ai_review = f"Error fetching AI review: {str(e)}"
 
     return render(request, "ai_review.html", {
         "submission": submission,
-        "ai_review": ai_review_text
+        "ai_review": ai_review
     })
 
 

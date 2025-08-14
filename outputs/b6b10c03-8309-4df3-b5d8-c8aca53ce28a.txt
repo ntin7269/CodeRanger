@@ -1,0 +1,1 @@
+C:\Users\Dell\Dropbox\PC\Desktop\ONLINE JUDGE\OJ\codes\b6b10c03-8309-4df3-b5d8-c8aca53ce28a.cpp:13:2: error: 'bjhbk' does not name a type

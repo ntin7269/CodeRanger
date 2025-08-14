@@ -1,5 +1,0 @@
-Traceback (most recent call last):
-  File "C:\Users\Dell\Dropbox\PC\Desktop\ONLINE JUDGE\OJ\codes\2912741e-f8ef-4198-a20a-a16dc3a1edb2.py", line 5, in <module>
-    print(a+b+c)
-              ^
-NameError: name 'c' is not defined

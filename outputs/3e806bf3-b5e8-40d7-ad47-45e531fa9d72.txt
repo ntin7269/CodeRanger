@@ -1,4 +1,0 @@
-Traceback (most recent call last):
-  File "C:\Users\Dell\Dropbox\PC\Desktop\ONLINE JUDGE\OJ\codes\3e806bf3-b5e8-40d7-ad47-45e531fa9d72.py", line 1, in <module>
-    gukyg
-NameError: name 'gukyg' is not defined
