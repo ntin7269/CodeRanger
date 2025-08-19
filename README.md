@@ -23,6 +23,7 @@ Submit solutions to get verdicts (Accepted, Wrong Answer, Runtime Error, etc.).
 
 🛠️ Admin Side
 
+
 🔑 Django Admin Panel (superuser only).
 
 ✍️ Create & Manage Problems – Add problem statements, constraints, and test cases.
@@ -46,25 +47,25 @@ https://www.loom.com/share/e613f2506a934bdd88b08d88e0a9b014?sid=fe132661-5843-45
 
 ⚙️ Installation & Setup
 1. Clone Repository
-git clone https://github.com/your-username/online-judge.git
+git clone https://github.com/ntin7269/CodeRanger
 cd online-judge
 
-2. Create Virtual Environment
+3. Create Virtual Environment
 python -m venv venv
 source venv/bin/activate    # For Linux/Mac
 venv\Scripts\activate       # For Windows
 
-3. Install Dependencies
+4. Install Dependencies
 pip install -r requirements.txt
 
-4. Apply Migrations
+5. Apply Migrations
 python manage.py makemigrations
 python manage.py migrate
 
-5. Create Superuser (for Admin Panel)
+6. Create Superuser (for Admin Panel)
 python manage.py createsuperuser
 
-6. Run Server
+7. Run Server
 python manage.py runserver
 
 
